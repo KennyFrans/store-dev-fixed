@@ -21,7 +21,6 @@ namespace WebApplication1.Controllers
 
         public IActionResult Index()
         {
-            var i = 0;
             var entity = _productService.GetAll().Select(x=> new HomeViewModel
             {
                 Code = x.Code,
