@@ -1,0 +1,67 @@
+﻿@model List<HomeViewModel>
+@{
+    ViewData["Title"] = "Home Page";
+}
+
+<br />
+<div class="row row">
+    <div class="col-md-12">
+        <table class="table table-bordered">
+            <caption class="text-center"><h1>Lorem Ipsum</h1></caption>
+            <tr>
+                <th>Code</th>
+                <th>Name</th>
+                <th>Price</th>
+                <th colspan="2"></th>
+            </tr>
+            @foreach (var m in Model)
+            {
+                <tr>
+                    <td>@m.Code</td>
+                    <td><strong class="product-title">@m.Name</strong><span class="text-offset">@m.Desc</span></td>
+                    <td>@m.UnitPrice</td>
+                    <td><a asp-controller="Home" asp-action="Detail" asp-route-code ="@m.Code">Detail</a></td>
+                    <td><a id="addToCart" asp-controller="Home" asp-action="Add" asp-route-code ="@m.Code">Add</a></td>
+                </tr>
+            }
+        </table>
+        
+    </div>
+</div>
+@section Scripts
+{
+    <script>
+        $("table tbody tr #addToCart").on( "click", function(e) {
+            e.preventDefault();
+            var url = $(this).attr("href");
+                $.ajax({
+                    url: url,
+                    type: "POST",
+                    contentType: "application/json;charset=utf-8",
+                    dataType: "json",
+                    beforeSend: function() {
+                        //waitingDialog.show();
+                    }
+                }).fail(function(data) {
+                    alert(data);
+                }).done(function(data) {
+                    //waitingDialog.hide();
+                    if (data.success) {
+                        swal("Success", data.responseText, "success").then(function(isConfirm) {
+                            if (isConfirm) {
+                            
+                            }
+                        });
+
+                    } else {
+                        swal("Error", data.responseText, "error").then(function(isConfirm) {
+                            if (isConfirm) {
+                            
+                            }
+                        });
+                    }
+                });
+
+        });
+    </script>
+}
