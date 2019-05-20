@@ -1,0 +1,8 @@
+﻿@using WebApplication1.Models.Modal
+@model DetailViewModel
+@await Html.PartialAsync("_ModalHeader", new ModalHeader { Heading = "Product Detail" })
+<div class="modal-body form-horizontal">
+    <div class="row">
+    </div>
+</div>
+@await Html.PartialAsync("_ModalFooter", new ModalFooter { OnlyCancelButton = true,CancelButtonText = "Close"}) 

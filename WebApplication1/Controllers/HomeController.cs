@@ -39,18 +39,18 @@ namespace WebApplication1.Controllers
                 if (entity != null)
                 {
                     var vm = new DetailViewModel
-                    {
+                    {   
                         Code = entity.Code,
                         Name = entity.Name,
                         UnitPrice = entity.UnitPrice
                     };
-                    return View(vm);
+                    return PartialView("_Detail", vm);
                 }
-                return RedirectToAction("Index");
+                return PartialView("_Detail", new DetailViewModel());
 
             }
 
-            return RedirectToAction("Index");
+            return PartialView("_Detail", new DetailViewModel());
         }
 
         public IActionResult Add(string code = "")
