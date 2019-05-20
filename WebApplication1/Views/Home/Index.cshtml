@@ -1,4 +1,5 @@
-﻿@model List<HomeViewModel>
+﻿@using WebApplication1.Helper
+@model List<HomeViewModel>
 @{
     ViewData["Title"] = "Home Page";
 }
@@ -18,8 +19,11 @@
             {
                 <tr>
                     <td>@m.Code</td>
-                    <td><strong class="product-title">@m.Name</strong><span class="text-offset">@m.Desc</span></td>
-                    <td>@m.UnitPrice</td>
+                    <td>
+                        <strong class="product-title">@m.Name</strong>
+                        <span class="text-offset">@m.Desc</span>
+                    </td>
+                    <td>@m.UnitPrice.ToRupiah()</td>
                     <td><a asp-controller="Home" asp-action="Detail" asp-route-code ="@m.Code">Detail</a></td>
                     <td><a id="addToCart" asp-controller="Home" asp-action="Add" asp-route-code ="@m.Code">Add</a></td>
                 </tr>
