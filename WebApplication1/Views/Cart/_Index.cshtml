@@ -1,0 +1,58 @@
+﻿@using System.Linq
+@using WebApplication1.Helper
+@using WebApplication1.Models.Modal
+@model List<CartViewModel>
+@await Html.PartialAsync("_ModalHeader", new ModalHeader { Heading = "Cart" })
+<div class="modal-body form-horizontal">
+    <div class="row">
+        <table class="table table-striped detail-table">
+            <thead>
+            <tr>
+                <th scope="col"></th>
+                <th scope="col">Code</th>
+                <th scope="col">Item</th>
+                <th scope="col">Qty</th>
+                <th scope="col">Price</th>
+            </tr>
+            </thead>
+            <tbody>
+            @foreach(var m in Model)
+            {
+                <tr>
+                    <td>
+                        <a href="#">
+                            <span class="glyphicon glyphicon-remove"></span>
+                        </a>
+                    </td>
+                    <td>
+                        @m.Code
+                    </td>
+                    <td>
+                        <strong class="product-title">@m.Name</strong>
+                        <span class="text-offset">@m.Desc.Wrap(20)</span>
+                    </td>
+                    <td class="item-qty">
+                        <input type="number" value="@m.Qty" min="1" max="@m.Qty">
+                    </td>
+                    <td class="item-price">@m.Price.ToRupiah()</td>
+                </tr>
+            }
+            </tbody>
+            <tfoot>
+            <tr>
+                <td colspan="4">Subtotal</td>
+                <td>$135.36</td>
+            </tr>
+            <tr>
+                <td colspan="4">Tax</td>
+                <td>$13.54</td>
+            </tr>
+            <tr>
+                <td colspan="4">Total</td>
+                <td>$148.90</td>
+            </tr>
+            </tfoot>
+        </table>
+    </div>
+</div>
+@await Html.PartialAsync("_ModalFooter", new ModalFooter {  CancelButtonText = "Close",SubmitButtonText = "Checkout"}) 

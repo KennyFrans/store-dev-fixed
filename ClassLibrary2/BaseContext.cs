@@ -13,8 +13,8 @@ namespace App.Repo
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
-            optionsBuilder.UseSqlServer(@"Data Source=FRANSKE;Initial Catalog=Store;Integrated Security=False;User ID=sa;Password=abc123");
-            //optionsBuilder.UseSqlServer(@"Server=.;Database=Store ;integrated security=True;");
+            //optionsBuilder.UseSqlServer(@"Data Source=FRANSKE;Initial Catalog=Store;Integrated Security=False;User ID=sa;Password=abc123");
+            optionsBuilder.UseSqlServer(@"Server=.;Database=Store ;integrated security=True;");
         }
     }
 }

@@ -7,7 +7,13 @@
 
 			}).on('hidden.bs.modal', function (e) {
 				$(this).removeData('bs.modal');
-			});
+            });
+
+            $("#modal-action-cart").on('loaded.bs.modal', function (e) {
+
+            }).on('hidden.bs.modal', function (e) {
+	            $(this).removeData('bs.modal');
+            });
 		}
 		$this.init = function () {
 			initilizeModel();

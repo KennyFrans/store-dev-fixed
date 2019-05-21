@@ -1,8 +1,11 @@
-﻿using App.Core.Products;
+﻿using System.Collections.Generic;
+using App.Core.Products;
 using App.Repo.Products;
 using Microsoft.AspNetCore.Mvc;
 using System.Diagnostics;
 using System.Linq;
+using Microsoft.AspNetCore.Http;
+using WebApplication1.Helper;
 using WebApplication1.Models;
 
 namespace WebApplication1.Controllers
@@ -57,13 +60,39 @@ namespace WebApplication1.Controllers
 
         public IActionResult Add(string code = "")
         {
+            var listCart = GetCartData();
+            var entity = _productService.GetByCode(code);
+            if (entity != null)
+            {
+                var cart = new CartViewModel
+                {
+                    Code = entity.Code,
+                    Desc = entity.Description,
+                    Name = entity.Name,
+                    Price = entity.UnitPrice,
+                };
+                cart.Qty += 1;
+
+                listCart.Add(cart);
+                SetCartData(listCart);
+
+                return Json(
+                    new
+                    {
+                        success = true,
+                        responseText = "Debug"
+                    }
+                );
+            }
+
             return Json(
                 new
                 {
-                    success = true,
-                    responseText = "Debug"
+                    success = false,
+                    responseText = "Error"
                 }
             );
+
         }
 
         public IActionResult About()
@@ -89,6 +118,27 @@ namespace WebApplication1.Controllers
         public IActionResult Error()
         {
             return View(new ErrorViewModel { RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier });
+        }
+
+        private List<CartViewModel> GetCartData()
+        {
+            if (HttpContext.Session.GetObject<List<CartViewModel>>("cart") == null)
+            {
+                HttpContext.Session.SetObject("cart", new List<CartViewModel>());
+            }
+
+            return HttpContext.Session.GetObject<List<CartViewModel>>("cart");
+           
+        }
+
+        private void SetCartData(List<CartViewModel> obj)
+        {
+            HttpContext.Session.SetObject("cart", obj);
+        }
+
+        private void RemoveCartData()
+        {
+            HttpContext.Session.Remove("cart");
         }
     }
 }
