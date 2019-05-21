@@ -11,7 +11,11 @@
     <div class="col-md-12">
         <form asp-action="Index" role="form">
             <div class="form-group">
-                <input autocomplete="off" value="" type="text" class="form-control" name="value">
+                <div class="inner-addon right-addon">
+                    <i class="glyphicon glyphicon-search"></i>
+                    <input placeholder="search name..." autocomplete="off" value="" type="text" class="form-control" name="value">
+                </div>
+                
             </div>
         </form> 
     </div>
@@ -34,7 +38,7 @@
                     <td>@m.Code</td>
                     <td>
                         <strong class="product-title">@m.Name</strong>
-                        <span class="text-offset">@m.Desc</span>
+                        <span class="text-offset">@m.Desc.Wrap(20)</span>
                     </td>
                     <td class="item-price">@m.UnitPrice.ToRupiah()</td>
                     <td>

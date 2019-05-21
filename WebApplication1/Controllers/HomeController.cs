@@ -43,6 +43,7 @@ namespace WebApplication1.Controllers
                     {   
                         Code = entity.Code,
                         Name = entity.Name,
+                        Desc = entity.Description,
                         UnitPrice = entity.UnitPrice
                     };
                     return PartialView("_Detail", vm);
