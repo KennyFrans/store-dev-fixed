@@ -1,11 +1,8 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Diagnostics;
-using System.Linq;
-using System.Threading.Tasks;
-using App.Core.Products;
+﻿using App.Core.Products;
 using App.Repo.Products;
 using Microsoft.AspNetCore.Mvc;
+using System.Diagnostics;
+using System.Linq;
 using WebApplication1.Models;
 
 namespace WebApplication1.Controllers
@@ -19,7 +16,7 @@ namespace WebApplication1.Controllers
             _productService = new ProductService(new ProductRepo());
         }
 
-        public IActionResult Index()
+        public IActionResult Index(string value = "")
         {
             var entity = _productService.GetAll().Select(x=> new HomeViewModel
             {
@@ -28,6 +25,10 @@ namespace WebApplication1.Controllers
                 Desc = x.Description,
                 UnitPrice = x.UnitPrice
             }).ToList();
+            if (!string.IsNullOrEmpty(value))
+            {
+                entity = entity.Where(x => x.Name.ToLower().Contains(value.ToLower())).ToList();
+            }
             return View(entity);
         }
 
@@ -59,7 +60,7 @@ namespace WebApplication1.Controllers
                 new
                 {
                     success = true,
-                    responseText = "Item ditambah"
+                    responseText = "Debug"
                 }
             );
         }

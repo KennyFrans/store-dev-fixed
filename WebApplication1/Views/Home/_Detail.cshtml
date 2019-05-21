@@ -3,6 +3,11 @@
 @await Html.PartialAsync("_ModalHeader", new ModalHeader { Heading = "Product Detail" })
 <div class="modal-body form-horizontal">
     <div class="row">
+        <table class="table table-striped detail-table">
+            <tr>
+                <td>@Model.Code</td>
+            </tr>
+        </table>
     </div>
 </div>
 @await Html.PartialAsync("_ModalFooter", new ModalFooter { OnlyCancelButton = true,CancelButtonText = "Close"}) 
