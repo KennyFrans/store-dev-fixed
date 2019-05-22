@@ -20,6 +20,17 @@ namespace WebApplication1.Controllers
             return PartialView("_Index",listCart);
         }
 
+        public IActionResult DeleteItem(string code = "")
+        {
+            return Json(
+                new
+                {
+                    success = true,
+                    responseText = "Debug"
+                }
+            );
+        }
+
         private List<CartViewModel> GetCartData()
         {
             if (HttpContext.Session.GetObject<List<CartViewModel>>("cart") == null)

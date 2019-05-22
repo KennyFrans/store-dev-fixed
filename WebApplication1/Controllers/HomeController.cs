@@ -64,17 +64,33 @@ namespace WebApplication1.Controllers
             var entity = _productService.GetByCode(code);
             if (entity != null)
             {
-                var cart = new CartViewModel
+               
+                if (listCart.Any(x=>x.Code == code))
                 {
-                    Code = entity.Code,
-                    Desc = entity.Description,
-                    Name = entity.Name,
-                    Price = entity.UnitPrice,
-                };
-                cart.Qty += 1;
-
-                listCart.Add(cart);
-                SetCartData(listCart);
+                    var currentItem  = listCart.FirstOrDefault(e=>e.Code == code);
+                    listCart.Remove(currentItem);
+                    if (currentItem != null)
+                    {
+                        currentItem.Price += entity.UnitPrice;
+                        currentItem.Qty += 1;
+                    }
+                    listCart.Add(currentItem);
+                    SetCartData(listCart);
+                }
+                else
+                {
+                    var cart = new CartViewModel
+                    {
+                        Code = entity.Code,
+                        Desc = entity.Description,
+                        Name = entity.Name,
+                        Price = entity.UnitPrice,
+                    };
+                    cart.Qty += 1;
+                    listCart.Add(cart);
+                    SetCartData(listCart);
+                }
+               
 
                 return Json(
                     new

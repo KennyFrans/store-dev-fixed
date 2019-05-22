@@ -20,7 +20,7 @@
             {
                 <tr>
                     <td>
-                        <a href="#">
+                        <a id="deleteFromCart" asp-controller="Cart" asp-action="DeleteItem" asp-route-code="@m.Code">
                             <span class="glyphicon glyphicon-remove"></span>
                         </a>
                     </td>
@@ -41,18 +41,52 @@
             <tfoot>
             <tr>
                 <td colspan="4">Subtotal</td>
-                <td>$135.36</td>
+                <td>@Model.Sum(x => x.Price).ToRupiah()</td>
             </tr>
             <tr>
                 <td colspan="4">Tax</td>
-                <td>$13.54</td>
+                <td>@Model.Sum(x => x.Tax).ToRupiah()</td>
             </tr>
             <tr>
                 <td colspan="4">Total</td>
-                <td>$148.90</td>
+                <td>@Model.Sum(x=>x.Price + x.Tax).ToRupiah()</td>
             </tr>
             </tfoot>
         </table>
     </div>
 </div>
 @await Html.PartialAsync("_ModalFooter", new ModalFooter {  CancelButtonText = "Close",SubmitButtonText = "Checkout"}) 
+<script>
+    $("table tbody tr #deleteFromCart").on("click",
+        function(e) {
+            e.preventDefault();
+            var url = $(this).attr("href");
+            $.ajax({
+                url: url,
+                type: "POST",
+                contentType: "application/json;charset=utf-8",
+                dataType: "json",
+                beforeSend: function () {
+                    //waitingDialog.show();
+                }
+            }).fail(function (data) {
+                alert(data);
+            }).done(function (data) {
+                //waitingDialog.hide();
+                if (data.success) {
+                    swal("Success", data.responseText, "success").then(function (isConfirm) {
+                        if (isConfirm) {
+
+                        }
+                    });
+
+                } else {
+                    swal("Error", data.responseText, "error").then(function (isConfirm) {
+                        if (isConfirm) {
+
+                        }
+                    });
+                }
+            });
+        });
+</script>
