@@ -9,6 +9,7 @@ namespace WebApplication1.Models.Modal
     public class BootstrapViewModel
     {
         public string ID { get; set; }
+        public string ModalContentId { get; set; }
         public string AreaLabeledId { get; set; }
         public ModalSize Size { get; set; }
         public string Message { get; set; }

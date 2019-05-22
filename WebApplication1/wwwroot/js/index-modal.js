@@ -19,8 +19,9 @@
 			initilizeModel();
 		}
 	}
-	$(function () {
+
+	$(function() {
 		var self = new User();
 		self.init();
-	})
+	});
 }(jQuery)) 
