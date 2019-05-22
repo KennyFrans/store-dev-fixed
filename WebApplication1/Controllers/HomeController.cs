@@ -18,7 +18,7 @@ namespace WebApplication1.Controllers
     {
         private readonly ProductService _productService;
         private readonly UserManager<User> _userManager;
-        
+
         //private readonly User
 
         public HomeController(UserManager<User> userManager)
@@ -31,7 +31,6 @@ namespace WebApplication1.Controllers
         public IActionResult Index(string value)
         {
             var user = _userManager.FindByIdAsync("1").Result;
-            var r = _userManager.AddToRoleAsync(user, "ADMIN").Result;
             var entity = _productService.GetAll().Select(x=> new HomeViewModel
             {
                 Code = x.Code,
