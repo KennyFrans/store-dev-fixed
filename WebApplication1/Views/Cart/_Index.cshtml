@@ -38,7 +38,7 @@
                             <span class="text-offset">@m.Desc.Wrap(20)</span>
                         </td>
                         <td class="item-qty">
-                            <input type="number" value="@m.Qty" min="1" max="@m.Qty">
+                            <input id="adjustQuantity" data-code="@m.Code" type="number" value="@m.Qty" min="1">
                         </td>
                         <td class="item-price">@m.Price.ToRupiah()</td>
                     </tr>
@@ -63,23 +63,59 @@
         
     </div>
 </div>
-@await Html.PartialAsync("_ModalFooter", new ModalFooter {  CancelButtonText = "Close",SubmitButtonText = "Checkout"}) 
+@await Html.PartialAsync("_ModalFooter", new ModalFooter {  CancelButtonText = "Close",SubmitButtonText = "Checkout"})
+
+
 <script>
+    $("#adjustQuantity").on("input",
+        function() {
+            if (/^0/.test(this.value)) {
+                this.value = this.value.replace(/^0+/, "");
+            }
+        });
+
+
     $("table tbody tr #deleteFromCart").on("click",
         function(e) {
             e.preventDefault();
             var url = $(this).attr("href");
             $.ajax({
                 url: url,
-                type: "POST",
+                type: "GET",
                 contentType: "application/json;charset=utf-8",
                 dataType: "html",
                 beforeSend: function () {
+                   
+                }
+            }).fail(function(data) {
+                alert("An error occured see console log");
+                console.log(data);
+            }).done(function(data) {
+                $("#modal-content-cart").html(data);
+            });
+        });
+
+    $("table tbody tr #adjustQuantity").on("change",
+        function(e) {
+            var qty = $(this).val();
+            var code = $(this).data("code");
+
+            $.ajax({
+                url: '@Url.Action("AdjustQuantity")',
+                data: {
+                    qty: qty,
+                    code:code
+                },
+                type: "GET",
+                dataType: "html",
+                beforeSend: function () {
+                    $("#myModal").modal("show");
                 }
             }).fail(function (data) {
                 alert("An error occured see console log");
                 console.log(data);
             }).done(function (data) {
+                $("#myModal").modal("hide");
                 $("#modal-content-cart").html(data);
             });
         });

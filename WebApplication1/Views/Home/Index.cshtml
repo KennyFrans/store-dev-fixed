@@ -15,37 +15,38 @@
                     <i class="glyphicon glyphicon-search"></i>
                     <input placeholder="search name..." autocomplete="off" value="" type="text" class="form-control" name="value">
                 </div>
-                
+
             </div>
-        </form> 
+        </form>
     </div>
     <div class="col-lg-12">
         <table class="" style="width: 100%;">
             <caption class="text-center">
-                <h1>Lorem Ipsum</h1></caption>
+                <h1>Lorem Ipsum</h1>
+            </caption>
             <thead>
-            <tr>
-                <th scope="col">Code</th>
-                <th scope="col">Name</th>
-                <th scope="col">Price</th>
-                <th scope="col" colspan="2"></th>
-            </tr>
+                <tr>
+                    <th scope="col">Code</th>
+                    <th scope="col">Name</th>
+                    <th scope="col">Price</th>
+                    <th scope="col" colspan="2"></th>
+                </tr>
             </thead>
 
             @foreach (var m in Model)
             {
-                <tr>
-                    <td>@m.Code</td>
-                    <td>
-                        <strong class="product-title">@m.Name</strong>
-                        <span class="text-offset">@m.Desc.Wrap(20)</span>
-                    </td>
-                    <td class="item-price">@m.UnitPrice.ToRupiah()</td>
-                    <td>
-                        <a id="detailProductModal" data-toggle="modal" asp-action="Detail" asp-route-code="@m.Code" data-target="#modal-action-detail">Detail</a>
-                    </td>
-                    <td><a id="addToCart" asp-controller="Home" asp-action="Add" asp-route-code="@m.Code">Add</a></td>
-                </tr>
+            <tr>
+                <td>@m.Code</td>
+                <td>
+                    <strong class="product-title">@m.Name</strong>
+                    <span class="text-offset">@m.Desc.Wrap(20)</span>
+                </td>
+                <td class="item-price">@m.UnitPrice.ToRupiah()</td>
+                <td>
+                    <a id="detailProductModal" data-toggle="modal" asp-action="Detail" asp-route-code="@m.Code" data-target="#modal-action-detail">Detail</a>
+                </td>
+                <td><a id="addToCart" asp-controller="Home" asp-action="Add" asp-route-code="@m.Code">Add</a></td>
+            </tr>
             }
         </table>
 
@@ -53,11 +54,24 @@
 </div>
 
 @await Html.PartialAsync("_Modal", new BootstrapViewModel { ID = "modal-action-detail",ModalContentId = "modal-content-detail", AreaLabeledId = "modal-action-detail-label", Size = ModalSize.Large })
+<div style="z-index: 1080 !important;" id="myModal" class="modal fade" role="dialog">
+    <div class="modal-dialog">
+        <!-- Modal content-->
+        <div class="modal-content">
+            <div class="modal-body">
+                <div>
+                    <strong>Loading...</strong>
+                </div>
+            </div>
+        </div>
+
+    </div>
+</div>
 
 
 @section Scripts
 {
-    <script src="~/js/index-modal.js" asp-append-version="true"></script> 
+    <script src="~/js/index-modal.js" asp-append-version="true"></script>
     <script>
         $("table tbody tr #addToCart").on("click", function (e) {
             e.preventDefault();
@@ -92,15 +106,5 @@
 
         });
 
-        $("#button").click(function () {
-            $.ajax({
-                url: "YourController/GetData",
-                type: "get",
-                data: $("form").serialize(), //if you need to post Model data, use this
-                success: function (result) {
-                    $("#partial").html(result);
-                }
-            });
-        })
     </script>
 }

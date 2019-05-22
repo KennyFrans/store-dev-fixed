@@ -21,6 +21,7 @@ namespace WebApplication1.Controllers
             return PartialView("_Index",listCart);
         }
 
+        [HttpGet]
         public IActionResult DeleteItem(string code = "")
         {
             var listCart = GetCartData();
@@ -42,6 +43,23 @@ namespace WebApplication1.Controllers
                 }
             }
             
+
+            return PartialView("_Index", listCart);
+        }
+
+        [HttpGet]
+        public IActionResult AdjustQuantity(int qty = 0,string code="")
+        {
+            var listCart = GetCartData();
+            var currentItem = listCart.FirstOrDefault(x => x.Code == code);
+            if (currentItem != null)
+            {
+                listCart.Remove(currentItem);
+                currentItem.Qty = qty;
+                currentItem.Price = qty * _productService.GetByCode(code).UnitPrice;
+                listCart.Add(currentItem);
+                SetCartData(listCart);
+            }
 
             return PartialView("_Index", listCart);
         }

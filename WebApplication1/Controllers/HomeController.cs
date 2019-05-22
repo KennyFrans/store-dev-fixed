@@ -58,6 +58,7 @@ namespace WebApplication1.Controllers
             return PartialView("_Detail", new DetailViewModel());
         }
 
+        [HttpPost]
         public IActionResult Add(string code = "")
         {
             var listCart = GetCartData();
