@@ -3,12 +3,12 @@ using System.Linq;
 
 namespace App.Core.Products
 {
-    public interface IProduct
+    public interface IProductService
     {
         Product GetByCode(string code);
     }
 
-    public class ProductService : DomainServiceBase<Product>,IProduct
+    public class ProductService : DomainServiceBase<Product>,IProductService
     {
         private readonly IProductRepo _productRepo;
         public ProductService(IProductRepo productRepo) : base(productRepo)

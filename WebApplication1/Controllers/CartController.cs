@@ -64,6 +64,19 @@ namespace WebApplication1.Controllers
             return PartialView("_Index", listCart);
         }
 
+        public IActionResult OrderItem()
+        {
+            var listCart = GetCartData();
+            RemoveCartData();
+            return Json(
+                new
+                {
+                    success = true,
+                    responseText = $"{listCart.Count} {(listCart.Count > 1 ? "items":"item")} requested"
+                }
+            );
+        }
+
         private List<CartViewModel> GetCartData()
         {
             if (HttpContext.Session.GetObject<List<CartViewModel>>("cart") == null)

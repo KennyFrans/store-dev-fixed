@@ -1,7 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-using App.Core.Products;
+﻿using App.Core.Products;
 
 namespace App.Repo.Products
 {

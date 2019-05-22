@@ -1,8 +1,11 @@
 ﻿using System;
+using App.Core.Users;
+using App.Identity;
 using App.Repo;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
@@ -41,15 +44,36 @@ namespace WebApplication1
             });
 
             services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_1);
-           
+
+            services.AddIdentity<User, UserRole>()
+                .AddDefaultTokenProviders();
+            services.AddTransient<IUserStore<User>, UserStore>();
+            services.AddTransient<IRoleStore<UserRole>, RoleStore>();
+            services.ConfigureApplicationCookie(options =>
+            {
+                options.Cookie.HttpOnly = true;
+                options.LoginPath = "/Login";
+                options.LogoutPath = "/Logout";
+            });
+
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
-        public void Configure(IApplicationBuilder app, IHostingEnvironment env)
+        public void Configure(IApplicationBuilder app, IHostingEnvironment env,SignInManager<User> s)
         {
             if (env.IsDevelopment())
             {
                 app.UseDeveloperExceptionPage();
+
+                //test
+                //if (s.UserManager.FindByNameAsync("dev").Result == null)
+                //{
+                //    var result = s.UserManager.CreateAsync(new User
+                //    {
+                //        UserName = "dev",
+                //        Email = "dev@app.com"
+                //    }, "Aut94L#G-a").Result;
+                //}
             }
             else
             {

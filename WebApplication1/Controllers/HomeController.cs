@@ -4,7 +4,11 @@ using App.Repo.Products;
 using Microsoft.AspNetCore.Mvc;
 using System.Diagnostics;
 using System.Linq;
+using App.Core.Users;
+using App.Identity;
+using App.Repo.Users;
 using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Identity;
 using WebApplication1.Helper;
 using WebApplication1.Models;
 
@@ -13,14 +17,21 @@ namespace WebApplication1.Controllers
     public class HomeController : Controller
     {
         private readonly ProductService _productService;
+        private readonly UserManager<User> _userManager;
+        
+        //private readonly User
 
-        public HomeController()
+        public HomeController(UserManager<User> userManager)
         {
+            _userManager = userManager;
+            //_userManager = userManager;
             _productService = new ProductService(new ProductRepo());
         }
 
-        public IActionResult Index(string value = "")
+        public IActionResult Index(string value)
         {
+            var user = _userManager.FindByIdAsync("1").Result;
+            var r = _userManager.AddToRoleAsync(user, "ADMIN").Result;
             var entity = _productService.GetAll().Select(x=> new HomeViewModel
             {
                 Code = x.Code,

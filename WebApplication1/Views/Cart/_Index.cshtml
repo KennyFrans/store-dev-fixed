@@ -63,7 +63,7 @@
         
     </div>
 </div>
-@await Html.PartialAsync("_ModalFooter", new ModalFooter {  CancelButtonText = "Close",SubmitButtonText = "Checkout"})
+@await Html.PartialAsync("_ModalFooter", new ModalFooter {  CancelButtonText = "Close",SubmitButtonText = "Checkout",SubmitButtonID = "checkoutItem"})
 
 
 <script>
@@ -74,6 +74,36 @@
             }
         });
 
+    $("#checkoutItem").on("click",
+        function(e) {
+            $.ajax({
+                url: '@Url.Action("OrderItem")',
+                type: "POST",
+                dataType: "json",
+                beforeSend: function () {
+                    $("#myModal").modal("show");
+                }
+            }).fail(function(data) {
+                alert("An error occured see console log");
+                console.log(data);
+            }).done(function (data) {
+                $("#myModal").modal("hide");
+                if (data.success) {
+                    swal("Success", data.responseText, "success").then(function (isConfirm) {
+                        if (isConfirm) {
+                            $("#modal-action-cart").modal("hide");
+                        }
+                    });
+
+                } else {
+                    swal("Error", data.responseText, "error").then(function (isConfirm) {
+                        if (isConfirm) {
+
+                        }
+                    });
+                }
+            });
+        });
 
     $("table tbody tr #deleteFromCart").on("click",
         function(e) {
@@ -83,7 +113,7 @@
                 url: url,
                 type: "GET",
                 contentType: "application/json;charset=utf-8",
-                dataType: "html",
+                dataType: "json",
                 beforeSend: function () {
                    
                 }
