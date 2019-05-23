@@ -14,30 +14,19 @@ using WebApplication1.Models;
 
 namespace WebApplication1.Controllers
 {
-    public class HomeController : Controller
+    public class HomeController : BaseController
     {
         private readonly ProductService _productService;
-        private readonly UserService _userService;
-        private readonly UserManager<User> _userManager;
 
-        //private readonly User
-
-        public HomeController(UserManager<User> userManager)
+        public HomeController(UserManager<User> userManager, SignInManager<User> signInManager) : base(userManager,
+            signInManager)
         {
-            _userManager = userManager;
             _productService = new ProductService(new ProductRepo());
-            _userService = new UserService(new UserRepo());
+           
         }
 
         public IActionResult Index(string value)
         {
-            //How my user authentication works
-            //var user = _userService.GetById(3);
-            //user.PasswordHash = _userManager.PasswordHasher.HashPassword(user, "bambang123");
-            //user.SelectedUserRole = new List<int> { 2 };
-            //_userService.Update(user);
-            //var result = _userManager.PasswordHasher.VerifyHashedPassword(user, user.PasswordHash, "abc12");
-
             var entity = _productService.GetAll().Select(x=> new HomeViewModel
             {
                 Code = x.Code,

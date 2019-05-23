@@ -10,7 +10,10 @@
             <li>
                 <a asp-controller="Account" asp-action="Index" title="Manage">Hello @UserManager.GetUserName(User) !</a>
             </li>
-            @*<li><a href="javascript:document.getElementById('logoutForm').submit()">Log off</a></li>*@
+            @*@if (User.IsInRole("ADMIN"))
+            {
+                <li><a asp-controller="Account" asp-action="Register">Register</a></li>
+            }*@
             <li>
                 <button type="submit" class="btn btn-link navbar-btn navbar-link">Log Out</button>
             </li>
@@ -21,8 +24,6 @@
 else
 {
     <ul class="nav navbar-nav navbar-right">
-        <li><a asp-controller="Account" asp-action="Register">Register</a></li>
-        @*<li><a asp-controller="Account" asp-action="Login">Log in</a></li>*@
         <li><a id="loginModal" data-toggle="modal" asp-controller="Account" asp-action="LogIn" data-target="#modal-action-login">Log in</a></li>
     </ul>
 }

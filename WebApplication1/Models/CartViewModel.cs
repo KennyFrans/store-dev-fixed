@@ -13,6 +13,7 @@ namespace WebApplication1.Models
         public string Name { get; set; }
         public int Qty { get; set; } = 0;
         public decimal Price { get; set; }
+        public string IsOrderedBy { get; set; }
 
         public decimal Tax
         {

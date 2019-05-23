@@ -1,7 +1,12 @@
 ﻿@using System.Linq
+@using App.Core.Users
+@using Microsoft.AspNetCore.Identity
 @using WebApplication1.Helper
 @using WebApplication1.Models.Modal
 @model List<CartViewModel>
+@inject SignInManager<User> SignInManager
+@inject UserManager<User> UserManager
+
 @await Html.PartialAsync("_ModalHeader", new ModalHeader { Heading = "Cart" })
 <div class="modal-body form-horizontal">
     <div class="row">
@@ -13,57 +18,57 @@
         {
             <table class="table table-striped detail-table">
                 <thead>
-                <tr>
-                    <th scope="col"></th>
-                    <th scope="col">Code</th>
-                    <th scope="col">Item</th>
-                    <th scope="col">Qty</th>
-                    <th scope="col">Price</th>
-                </tr>
+                    <tr>
+                        <th scope="col"></th>
+                        <th scope="col">Code</th>
+                        <th scope="col">Item</th>
+                        <th scope="col">Qty</th>
+                        <th scope="col">Price</th>
+                    </tr>
                 </thead>
                 <tbody>
-                @foreach (var m in Model)
-                {
-                    <tr>
-                        <td>
-                            <a id="deleteFromCart" asp-controller="Cart" asp-action="DeleteItem" asp-route-code="@m.Code">
-                                <span class="glyphicon glyphicon-remove"></span>
-                            </a>
-                        </td>
-                        <td>
-                            @m.Code
-                        </td>
-                        <td>
-                            <strong class="product-title">@m.Name</strong>
-                            <span class="text-offset">@m.Desc.Wrap(20)</span>
-                        </td>
-                        <td class="item-qty">
-                            <input id="adjustQuantity" data-code="@m.Code" type="number" value="@m.Qty" min="1">
-                        </td>
-                        <td class="item-price">@m.Price.ToRupiah()</td>
-                    </tr>
-                }
+                    @foreach (var m in Model)
+                    {
+                        <tr>
+                            <td>
+                                <a id="deleteFromCart" asp-controller="Cart" asp-action="DeleteItem" asp-route-code="@m.Code">
+                                    <span class="glyphicon glyphicon-remove"></span>
+                                </a>
+                            </td>
+                            <td>
+                                @m.Code
+                            </td>
+                            <td>
+                                <strong class="product-title">@m.Name</strong>
+                                <span class="text-offset">@m.Desc.Wrap(20)</span>
+                            </td>
+                            <td class="item-qty">
+                                <input id="adjustQuantity" data-code="@m.Code" type="number" value="@m.Qty" min="1">
+                            </td>
+                            <td class="item-price">@m.Price.ToRupiah()</td>
+                        </tr>
+                    }
                 </tbody>
                 <tfoot>
-                <tr>
-                    <td colspan="4">Subtotal</td>
-                    <td>@Model.Sum(x => x.Price).ToRupiah()</td>
-                </tr>
-                <tr>
-                    <td colspan="4">Tax</td>
-                    <td>@Model.Sum(x => x.Tax).ToRupiah()</td>
-                </tr>
-                <tr>
-                    <td colspan="4">Total</td>
-                    <td>@Model.Sum(x => x.Price + x.Tax).ToRupiah()</td>
-                </tr>
+                    <tr>
+                        <td colspan="4">Subtotal</td>
+                        <td>@Model.Sum(x => x.Price).ToRupiah()</td>
+                    </tr>
+                    <tr>
+                        <td colspan="4">Tax</td>
+                        <td>@Model.Sum(x => x.Tax).ToRupiah()</td>
+                    </tr>
+                    <tr>
+                        <td colspan="4">Total</td>
+                        <td>@Model.Sum(x => x.Price + x.Tax).ToRupiah()</td>
+                    </tr>
                 </tfoot>
             </table>
         }
-        
+
     </div>
 </div>
-@await Html.PartialAsync("_ModalFooter", new ModalFooter {  CancelButtonText = "Close",SubmitButtonText = "Checkout",SubmitButtonID = "checkoutItem"})
+@await Html.PartialAsync("_ModalFooter", new ModalFooter { CancelButtonText = "Close", SubmitButtonText = "Checkout", SubmitButtonID = "checkoutItem" })
 
 
 <script>
@@ -75,34 +80,41 @@
         });
 
     $("#checkoutItem").on("click",
-        function(e) {
-            $.ajax({
-                url: '@Url.Action("OrderItem")',
-                type: "POST",
-                dataType: "json",
-                beforeSend: function () {
-                    $("#myModal").modal("show");
-                }
-            }).fail(function(data) {
-                alert("An error occured see console log");
-                console.log(data);
-            }).done(function (data) {
-                $("#myModal").modal("hide");
-                if (data.success) {
-                    swal("Success", data.responseText, "success").then(function (isConfirm) {
-                        if (isConfirm) {
-                            $("#modal-action-cart").modal("hide");
-                        }
-                    });
+        function (e) {
+            var issignin = @SignInManager.IsSignedIn(User).ToString().ToLower();
+            if (issignin === "true") {
+                $.ajax({
+                    url: '@Url.Action("OrderItem")',
+                    type: "POST",
+                    dataType: "json",
+                    beforeSend: function() {
+                        $("#myModal").modal("show");
+                    }
+                }).fail(function(data) {
+                    alert("An error occured see console log");
+                    console.log(data);
+                }).done(function(data) {
+                    $("#myModal").modal("hide");
+                    if (data.success) {
+                        swal("Success", data.responseText, "success").then(function(isConfirm) {
+                            if (isConfirm) {
+                                $("#modal-action-cart").modal("hide");
+                            }
+                        });
 
-                } else {
-                    swal("Error", data.responseText, "error").then(function (isConfirm) {
-                        if (isConfirm) {
+                    } else {
+                        swal("Error", data.responseText, "error").then(function(isConfirm) {
+                            if (isConfirm) {
 
-                        }
-                    });
-                }
-            });
+                            }
+                        });
+                    }
+                });
+            } else {
+                $("#modal-action-cart").modal('hide');
+                $("#loginModal").click();
+            }
+            
         });
 
     $("table tbody tr #deleteFromCart").on("click",
@@ -115,7 +127,7 @@
                 contentType: "application/json;charset=utf-8",
                 dataType: "json",
                 beforeSend: function () {
-                   
+
                 }
             }).fail(function(data) {
                 alert("An error occured see console log");

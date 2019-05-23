@@ -20,6 +20,14 @@ namespace WebApplication1.Controllers
 
         public IActionResult Index()
         {
+            //How my user authentication works
+            //var user = _userService.GetById(3);
+            //user.PasswordHash = _userManager.PasswordHasher.HashPassword(user, "bambang123");
+            //user.SelectedUserRole = new List<int> { 2 };
+            //_userService.Update(user);
+            //var result = _userManager.PasswordHasher.VerifyHashedPassword(user, user.PasswordHash, "abc12");
+            //GetCurrentUser().
+
             return null;
         }
         [HttpPost]
