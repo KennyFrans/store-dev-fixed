@@ -67,14 +67,26 @@ namespace WebApplication1.Controllers
         public IActionResult OrderItem()
         {
             var listCart = GetCartData();
-            RemoveCartData();
+            if (listCart.Count != 0)
+            {
+                RemoveCartData();
+                return Json(
+                    new
+                    {
+                        success = true,
+                        responseText = $"{listCart.Count} {(listCart.Count > 1 ? "items" : "item")} requested"
+                    }
+                );
+            }
+
             return Json(
                 new
                 {
-                    success = true,
-                    responseText = $"{listCart.Count} {(listCart.Count > 1 ? "items":"item")} requested"
+                    success = false,
+                    responseText = $"You dont order any item yet"
                 }
             );
+
         }
 
         private List<CartViewModel> GetCartData()
