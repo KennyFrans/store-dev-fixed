@@ -3,14 +3,15 @@ using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 using System.Text;
+using App.Commons;
 
 namespace App.Core.Users
 {
     [Table("User")]
-    public class User
+    public class User:EntityBase
     {
         [Key, Required]
-        public int Id { get; set; }
+        public override int Id { get; set; }
 
         [Required, MaxLength(128)]
         public string UserName { get; set; }
@@ -31,5 +32,10 @@ namespace App.Core.Users
         public string LastName { get; set; }
 
         public virtual ICollection<UserRole> UserRoles { get; set; }
+
+        [Required]
+        [NotMapped]
+        [Display(Name = "User Role")]
+        public ICollection<int> SelectedUserRole { get; set; }
     }
 }

@@ -11,5 +11,6 @@ namespace App.Commons
         List<T> GetAll();
         void Save(T employee);
         void Delete(int id);
+        void Update(T entity);
     }
 }

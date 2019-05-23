@@ -7,5 +7,6 @@ namespace App.Core.Products
 {
     public interface IProductRepo : IRepository<Product>
     {
+       
     }
 }

@@ -11,7 +11,7 @@ using Microsoft.EntityFrameworkCore.Extensions.Internal;
 
 namespace App.Identity
 {
-    public class UserStore : IUserStore<User>, IUserPasswordStore<User>
+    public class UserStore : IUserPasswordStore<User>,IUserRoleStore<User>
     {
         protected BaseContext Db = new BaseContext();
 
@@ -61,11 +61,15 @@ namespace App.Identity
 
         public async Task<IdentityResult> CreateAsync(User user, CancellationToken cancellationToken)
         {
-            Db.Add(user);
+            using (var context = new BaseContext())
+            {
+                context.Add(user);
 
-            await Db.SaveChangesAsync(cancellationToken);
+                await context.SaveChangesAsync(cancellationToken);
 
-            return await Task.FromResult(IdentityResult.Success);
+                return await Task.FromResult(IdentityResult.Success);
+            }
+           
         }
 
         public Task<IdentityResult> UpdateAsync(User user, CancellationToken cancellationToken)
@@ -116,6 +120,66 @@ namespace App.Identity
         public Task<bool> HasPasswordAsync(User user, CancellationToken cancellationToken)
         {
             return Task.FromResult(!string.IsNullOrWhiteSpace(user.PasswordHash));
+        }
+
+        public Task AddToRoleAsync(User user, string roleName, CancellationToken cancellationToken)
+        {
+            using (var context = new BaseContext())
+            {
+                var roleToAdd = context.Roles.FirstOrDefault(r => r.Name == roleName);
+                if (roleToAdd != null)
+                {
+                    var userRole = new UserRole
+                    {
+                        UserId = user.Id,
+                        RoleId = roleToAdd.Id
+                    };
+                    user.UserRoles.Add(userRole);
+                }
+
+                return context.SaveChangesAsync(cancellationToken);
+            }
+            
+        }
+
+        public Task RemoveFromRoleAsync(User user, string roleName, CancellationToken cancellationToken)
+        {
+            throw new NotImplementedException();
+        }
+
+        public Task<IList<string>> GetRolesAsync(User user, CancellationToken cancellationToken)
+        {
+            throw new NotImplementedException();
+        }
+
+        public Task<bool> IsInRoleAsync(User user, string roleName, CancellationToken cancellationToken)
+        {
+            //using (var context = new BaseContext())
+            //{
+                return Task.Run(() =>
+                {
+                    var role = Db.Roles.FirstOrDefault(r => r.Name == roleName);
+                    return user.UserRoles.Any(x => role != null && x.RoleId == role.Id);
+                }, cancellationToken);
+                
+                
+                //if (roleToAdd != null)
+                //{
+                //    var userRole = new UserRole
+                //    {
+                //        UserId = user.Id,
+                //        RoleId = roleToAdd.Id
+                //    };
+                //    user.UserRoles.Add(userRole);
+                //}
+
+                //return context.SaveChangesAsync(cancellationToken);
+            //}
+        }
+
+        public Task<IList<User>> GetUsersInRoleAsync(string roleName, CancellationToken cancellationToken)
+        {
+            throw new NotImplementedException();
         }
     }
 }

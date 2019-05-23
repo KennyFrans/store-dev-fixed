@@ -28,7 +28,7 @@ namespace App.Repo
             return _dbSet.FirstOrDefaultAsync(p => p.Id == id).Result;
         }
 
-        public List<T> GetAll()
+        public virtual List<T> GetAll()
         {
             return _dbSet.ToListAsync().Result;
         }
@@ -47,6 +47,11 @@ namespace App.Repo
             var entity = GetById(id);
             _dbSet.Remove(entity);
             Context.SaveChanges();
+        }
+
+        public virtual void Update(T entity)
+        {
+            throw new System.NotImplementedException();
         }
     }
 }
