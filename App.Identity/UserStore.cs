@@ -7,6 +7,7 @@ using System.Threading.Tasks;
 using App.Core.Users;
 using App.Repo;
 using Microsoft.AspNetCore.Identity;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Extensions.Internal;
 
 namespace App.Identity
@@ -15,10 +16,6 @@ namespace App.Identity
     {
         protected BaseContext Db = new BaseContext();
 
-        //public UserStore(BaseContext db)
-        //{
-        //    this._db = db;
-        //}
 
         public void Dispose()
         {
@@ -149,32 +146,26 @@ namespace App.Identity
 
         public Task<IList<string>> GetRolesAsync(User user, CancellationToken cancellationToken)
         {
-            throw new NotImplementedException();
+            
+            var id = Db.Users.Include("UserRoles").FirstOrDefault(x => x.Id == user.Id)?.UserRoles.Select(x => x.RoleId)
+                .ToList();
+
+            var roles = new List<string>();
+            id.ForEach(x =>
+            {
+                roles.Add(Db.Roles.FirstOrDefault(e => e.Id == x)?.Name);
+            });
+            return Task.FromResult((IList<string>)roles);
+
         }
 
         public Task<bool> IsInRoleAsync(User user, string roleName, CancellationToken cancellationToken)
         {
-            //using (var context = new BaseContext())
-            //{
                 return Task.Run(() =>
                 {
                     var role = Db.Roles.FirstOrDefault(r => r.Name == roleName);
                     return user.UserRoles.Any(x => role != null && x.RoleId == role.Id);
                 }, cancellationToken);
-                
-                
-                //if (roleToAdd != null)
-                //{
-                //    var userRole = new UserRole
-                //    {
-                //        UserId = user.Id,
-                //        RoleId = roleToAdd.Id
-                //    };
-                //    user.UserRoles.Add(userRole);
-                //}
-
-                //return context.SaveChangesAsync(cancellationToken);
-            //}
         }
 
         public Task<IList<User>> GetUsersInRoleAsync(string roleName, CancellationToken cancellationToken)

@@ -49,6 +49,7 @@ namespace WebApplication1
                 .AddDefaultTokenProviders();
             services.AddTransient<IUserStore<User>, UserStore>();
             services.AddTransient<IRoleStore<UserRole>, RoleStore>();
+
             services.ConfigureApplicationCookie(options =>
             {
                 options.Cookie.HttpOnly = true;
@@ -85,6 +86,7 @@ namespace WebApplication1
             app.UseStaticFiles();
             app.UseSession();
             app.UseCookiePolicy();
+            app.UseAuthentication(); //penting jancuk buat login
 
             app.UseMvc(routes =>
             {
@@ -92,6 +94,8 @@ namespace WebApplication1
                     name: "default",
                     template: "{controller=Home}/{action=Index}/{id?}");
             });
+
+            
         }
     }
 }

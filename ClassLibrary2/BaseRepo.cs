@@ -33,7 +33,7 @@ namespace App.Repo
             return _dbSet.ToListAsync().Result;
         }
 
-        public void Save(T entity)
+        public virtual void Save(T entity)
         {
             if (entity.Id == 0)
                 _dbSet.Add(entity);

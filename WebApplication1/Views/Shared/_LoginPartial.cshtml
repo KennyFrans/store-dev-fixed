@@ -1,0 +1,28 @@
+﻿@using App.Core.Users
+@using Microsoft.AspNetCore.Identity
+@inject SignInManager<User> SignInManager
+@inject UserManager<User> UserManager
+
+@if (SignInManager.IsSignedIn(User))
+{
+    <form method="post" asp-controller="Account" asp-action="Logout" id="logoutForm" class="navbar-right">
+        <ul class="nav navbar-nav navbar-right">
+            <li>
+                <a asp-controller="Account" asp-action="Index" title="Manage">Hello @UserManager.GetUserName(User) !</a>
+            </li>
+            @*<li><a href="javascript:document.getElementById('logoutForm').submit()">Log off</a></li>*@
+            <li>
+                <button type="submit" class="btn btn-link navbar-btn navbar-link">Log Out</button>
+            </li>
+        </ul>
+    </form>
+
+}
+else
+{
+    <ul class="nav navbar-nav navbar-right">
+        <li><a asp-controller="Account" asp-action="Register">Register</a></li>
+        @*<li><a asp-controller="Account" asp-action="Login">Log in</a></li>*@
+        <li><a id="loginModal" data-toggle="modal" asp-controller="Account" asp-action="LogIn" data-target="#modal-action-login">Log in</a></li>
+    </ul>
+}

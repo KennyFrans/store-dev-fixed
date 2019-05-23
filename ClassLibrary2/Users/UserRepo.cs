@@ -69,5 +69,30 @@ namespace App.Repo.Users
                 return e;
             }
         }
+
+        public override void Save(User entity)
+        {
+            using (var context = new BaseContext())
+            {
+                context.Set<User>().Add(entity);
+
+                if (entity.SelectedUserRole != null)
+                {
+                    foreach (var roleid in entity.SelectedUserRole)
+                    {
+                        var nRole = context.Roles.Find(roleid);
+                        var userrole = new UserRole
+                        {
+                            UserId = entity.Id,
+                            RoleId = nRole.Id
+                        };
+                        entity.UserRoles.Add(userrole);
+                    }
+                }
+               
+
+                context.SaveChanges();
+            }
+        }
     }
 }

@@ -1,0 +1,34 @@
+﻿@model  LoginViewModel
+@using WebApplication1.Models.Modal
+
+
+    <form method="post" asp-action="DoLogIn" role="form">
+        @await Html.PartialAsync("_ModalHeader", new ModalHeader { Heading = "Product Detail" })
+        <div class="modal-body form-horizontal">
+            <div class="row">
+                <div class="form-group">
+                    <label asp-for="Username" class="col-lg-3 col-sm-3 control-label"></label>
+                    <div class="col-lg-6">
+                        <input asp-for="Username" class="form-control" />
+                        <span asp-validation-for="Username"></span>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label asp-for="Password" class="col-lg-3 col-sm-3 control-label"></label>
+                    <div class="col-lg-6">
+                        <input asp-for="Password" class="form-control" />
+                        <span asp-validation-for="Password"></span>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label asp-for="RememberMe" class="col-lg-3 col-sm-3 control-label"></label>
+                    <div class="col-lg-6">
+                        <input style="margin: 11px 0 0;" asp-for="RememberMe" />
+                        <span asp-validation-for="RememberMe"></span>
+                    </div>
+                </div>
+            </div>
+        </div>
+        @await Html.PartialAsync("_ModalFooter", new ModalFooter {  CancelButtonText = "Close",SubmitButtonID = "doLogin",SubmitButtonText = "Log In"})
+    </form> 
+
