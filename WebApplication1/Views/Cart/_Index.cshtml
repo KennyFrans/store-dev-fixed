@@ -83,8 +83,7 @@
         function (e) {
             var issignin = @SignInManager.IsSignedIn(User).ToString().ToLower();
             
-            if (issignin != "false") {
-                //alert(issignin);
+            if (issignin) {
                 $.ajax({
                     url: '@Url.Action("OrderItem")',
                     type: "POST",
@@ -113,7 +112,6 @@
                     }
                 });
             } else {
-                //alert(issignin);
                 $("#modal-action-cart").modal('hide');
                 $("#loginModal").click();
             }
