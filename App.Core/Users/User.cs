@@ -1,9 +1,7 @@
-﻿using System;
+﻿using App.Commons;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
-using System.Text;
-using App.Commons;
 
 namespace App.Core.Users
 {

@@ -28,19 +28,21 @@ namespace WebApplication1.Controllers
             var currentItem = listCart.FirstOrDefault(x=>x.Code == code);
             if (currentItem != null)
             {
-                if (listCart.Any(x => x.Code == code && x.Qty > 1))
-                {
-                    listCart.Remove(currentItem);
-                    currentItem.Qty -= 1;
-                    currentItem.Price -= _productService.GetByCode(code).UnitPrice;
-                    listCart.Add(currentItem);
-                    SetCartData(listCart);
-                }
-                else
-                {
-                    listCart.Remove(currentItem);
-                    SetCartData(listCart);
-                }
+                listCart.Remove(currentItem);
+                SetCartData(listCart);
+                //if (listCart.Any(x => x.Code == code && x.Qty > 1))
+                //{
+                //    listCart.Remove(currentItem);
+                //    currentItem.Qty -= 1;
+                //    currentItem.Price -= _productService.GetByCode(code).UnitPrice;
+                //    listCart.Add(currentItem);
+                //    SetCartData(listCart);
+                //}
+                //else
+                //{
+                //    listCart.Remove(currentItem);
+                //    SetCartData(listCart);
+                //}
             }
             
 

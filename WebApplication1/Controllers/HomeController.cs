@@ -18,15 +18,16 @@ namespace WebApplication1.Controllers
     {
         private readonly ProductService _productService;
 
+
         public HomeController(UserManager<User> userManager, SignInManager<User> signInManager) : base(userManager,
             signInManager)
         {
             _productService = new ProductService(new ProductRepo());
-           
         }
 
         public IActionResult Index(string value)
         {
+
             var entity = _productService.GetAll().Select(x=> new HomeViewModel
             {
                 Code = x.Code,
