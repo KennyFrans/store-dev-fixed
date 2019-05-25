@@ -1,13 +1,14 @@
 ﻿@using WebApplication1.Code
 @using WebApplication1.Helper
 @using WebApplication1.Models.Modal
-@model List<HomeViewModel>
+@model ReflectionIT.Mvc.Paging.PagingList<HomeViewModel>
 @{
     ViewData["Title"] = "Home";
 }
 
 <br />
 <div class="row row">
+
     <div class="col-md-12">
         <form asp-action="Index" role="form">
             <div class="form-group">
@@ -27,30 +28,40 @@
             <thead>
                 <tr>
                     <th scope="col">Code</th>
-                    <th scope="col">Name</th>
-                    <th scope="col">Price</th>
+                    <th scope="col">
+                        <a asp-action="Index" asp-route-sortOrder="@ViewData["NameSortParm"]">Name</a>
+                    </th>
+                    <th scope="col">
+                        <a asp-action="Index" asp-route-sortOrder="@ViewData["PriceSortParm"]">Price</a>
+                    </th>
                     <th scope="col" colspan="2"></th>
                 </tr>
             </thead>
 
             @foreach (var m in Model)
             {
-            <tr>
-                <td>@m.Code</td>
-                <td>
-                    <strong class="product-title">@m.Name</strong>
-                    <span class="text-offset">@m.Desc.Wrap(20)</span>
-                </td>
-                <td class="item-price">@m.UnitPrice.ToRupiah()</td>
-                <td>
-                    <a id="detailProductModal" data-toggle="modal" asp-action="Detail" asp-route-code="@m.Code" data-target="#modal-action-detail">Detail</a>
-                </td>
-                <td><a id="addToCart" asp-controller="Home" asp-action="Add" asp-route-code="@m.Code">Add</a></td>
-            </tr>
+                <tr>
+                    <td>@m.Code</td>
+                    <td>
+                        <strong class="product-title">@m.Name</strong>
+                        <span class="text-offset">@m.Desc.Wrap(20)</span>
+                    </td>
+                    <td class="item-price">@m.UnitPrice.ToRupiah()</td>
+                    <td>
+                        <a id="detailProductModal" data-toggle="modal" asp-action="Detail" asp-route-code="@m.Code" data-target="#modal-action-detail">Detail</a>
+                    </td>
+                    <td><a id="addToCart" asp-controller="Home" asp-action="Add" asp-route-code="@m.Code">Add</a></td>
+                </tr>
             }
         </table>
-
+        <nav aria-label="Product paging">
+            @await this.Component.InvokeAsync("Pager", new { pagingList = this.Model })
+        </nav>
     </div>
+   
+    <nav aria-label="Product paging">
+        <vc:pager paging-list="@Model"></vc:pager>
+    </nav>
 </div>
 
 @await Html.PartialAsync("_Modal", new BootstrapViewModel { ID = "modal-action-detail",ModalContentId = "modal-content-detail", AreaLabeledId = "modal-action-detail-label", Size = ModalSize.Large })

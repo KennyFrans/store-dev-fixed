@@ -1,14 +1,17 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using App.Core.Products;
 using App.Repo.Products;
 using Microsoft.AspNetCore.Mvc;
 using System.Diagnostics;
 using System.Linq;
+using System.Threading.Tasks;
 using App.Core.Users;
 using App.Identity;
 using App.Repo.Users;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
+using ReflectionIT.Mvc.Paging;
 using WebApplication1.Helper;
 using WebApplication1.Models;
 
@@ -25,21 +28,40 @@ namespace WebApplication1.Controllers
             _productService = new ProductService(new ProductRepo());
         }
 
-        public IActionResult Index(string value)
+        public async Task<IActionResult> Index(string value,string sortorder,int page = 1)
         {
+            ViewData["NameSortParm"] = string.IsNullOrEmpty(sortorder) ? "name_desc" : "";
+            ViewData["PriceSortParm"] = sortorder == "Price" ? "price_desc" : "Price";
 
-            var entity = _productService.GetAll().Select(x=> new HomeViewModel
+            var entity = _productService.GetProductsForPagination().Select(x => new HomeViewModel
             {
                 Code = x.Code,
                 Name = x.Name,
                 Desc = x.Description,
                 UnitPrice = x.UnitPrice
-            }).ToList();
+            }).OrderBy(x=>x.Code);
             if (!string.IsNullOrEmpty(value))
             {
-                entity = entity.Where(x => x.Name.ToLower().Contains(value.ToLower())).ToList();
+                entity = entity.Where(x => x.Name.ToLower().Contains(value.ToLower())).OrderBy(x=>x.Code);
             }
-            return View(entity);
+
+            switch (sortorder)
+            {
+                case "name_desc":
+                    entity = entity.OrderByDescending(s => s.Name);
+                    break;
+                case "Price":
+                    entity = entity.OrderBy(s => s.UnitPrice);
+                    break;
+                case "price_desc":
+                    entity = entity.OrderByDescending(s => s.UnitPrice);
+                    break;
+                default:
+                    //entity = entity.OrderBy(s => s.Name);
+                    break;
+            }
+            var model = await PagingList.CreateAsync(entity, 10, page);
+            return View(model);
         }
 
         public IActionResult Detail(string code = "")
@@ -164,5 +186,6 @@ namespace WebApplication1.Controllers
         {
             HttpContext.Session.Remove("cart");
         }
+
     }
 }

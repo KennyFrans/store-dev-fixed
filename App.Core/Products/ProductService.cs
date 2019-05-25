@@ -6,6 +6,7 @@ namespace App.Core.Products
     public interface IProductService
     {
         Product GetByCode(string code);
+        IQueryable<Product> GetProductsForPagination();
     }
 
     public class ProductService : DomainServiceBase<Product>,IProductService
@@ -31,6 +32,11 @@ namespace App.Core.Products
         public Product GetByCode(string code)
         {
             return _productRepo.GetAll().FirstOrDefault(x => x.Code.ToLower() == code.ToLower());
+        }
+
+        public IQueryable<Product> GetProductsForPagination()
+        {
+            return _productRepo.GetForPagination();
         }
     }
 }
