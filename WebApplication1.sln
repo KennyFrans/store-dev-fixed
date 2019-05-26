@@ -17,10 +17,6 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "3.Repo", "3.Repo", "{A95100
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "App.Repo", "ClassLibrary2\App.Repo.csproj", "{2E2A1883-0E95-4CDA-BF14-C6E9072C0ECC}"
 EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "4. Identity", "4. Identity", "{44FB46BD-1388-4DF0-853B-9B3FE9638EDC}"
-EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "App.Identity", "App.Identity\App.Identity.csproj", "{15A2155E-9678-4323-8DFD-4C17C3AEB581}"
-EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -43,10 +39,6 @@ Global
 		{2E2A1883-0E95-4CDA-BF14-C6E9072C0ECC}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{2E2A1883-0E95-4CDA-BF14-C6E9072C0ECC}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{2E2A1883-0E95-4CDA-BF14-C6E9072C0ECC}.Release|Any CPU.Build.0 = Release|Any CPU
-		{15A2155E-9678-4323-8DFD-4C17C3AEB581}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{15A2155E-9678-4323-8DFD-4C17C3AEB581}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{15A2155E-9678-4323-8DFD-4C17C3AEB581}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{15A2155E-9678-4323-8DFD-4C17C3AEB581}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -55,7 +47,6 @@ Global
 		{92230629-F7B6-42E4-A5C1-1AC9A65FEDD6} = {D2265BAB-7C9B-4886-B9E6-21D5FE2A0FD7}
 		{DE338139-65DD-43BF-84C4-F013D80962DB} = {143259F4-D5DE-471C-9DD6-21EE3D0F50AC}
 		{2E2A1883-0E95-4CDA-BF14-C6E9072C0ECC} = {A9510073-C66D-41E3-8366-0A4A00F63781}
-		{15A2155E-9678-4323-8DFD-4C17C3AEB581} = {44FB46BD-1388-4DF0-853B-9B3FE9638EDC}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {2F96D614-5A55-4B7F-AC71-A37C42964C00}

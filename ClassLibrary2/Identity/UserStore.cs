@@ -1,16 +1,14 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
 using App.Core.Users;
-using App.Repo;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Extensions.Internal;
 
-namespace App.Identity
+namespace App.Repo.Identity
 {
     public class UserStore : IUserPasswordStore<User>,IUserRoleStore<User>
     {

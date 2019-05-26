@@ -1,17 +1,13 @@
-﻿using System;
-using System.Collections.Generic;
-using App.Core.Products;
+﻿using App.Core.Products;
+using App.Core.Users;
 using App.Repo.Products;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
+using ReflectionIT.Mvc.Paging;
+using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
 using System.Threading.Tasks;
-using App.Core.Users;
-using App.Identity;
-using App.Repo.Users;
-using Microsoft.AspNetCore.Http;
-using Microsoft.AspNetCore.Identity;
-using ReflectionIT.Mvc.Paging;
 using WebApplication1.Helper;
 using WebApplication1.Models;
 

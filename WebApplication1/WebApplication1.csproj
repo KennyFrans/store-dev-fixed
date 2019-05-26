@@ -15,7 +15,6 @@
   <ItemGroup>
     <ProjectReference Include="..\App.Commons\App.Commons.csproj" />
     <ProjectReference Include="..\App.Core\App.Core.csproj" />
-    <ProjectReference Include="..\App.Identity\App.Identity.csproj" />
     <ProjectReference Include="..\ClassLibrary2\App.Repo.csproj" />
   </ItemGroup>
 

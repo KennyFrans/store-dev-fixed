@@ -1,12 +1,9 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-using System.Threading;
+﻿using System.Threading;
 using System.Threading.Tasks;
 using App.Core.Users;
 using Microsoft.AspNetCore.Identity;
 
-namespace App.Identity
+namespace App.Repo.Identity
 {
     public class RoleStore : IRoleStore<UserRole>
     {
