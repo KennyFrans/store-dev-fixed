@@ -1,14 +1,16 @@
-﻿using App.Core.Users;
+﻿using System;
+using App.Core.Users;
+using App.Repo;
 using App.Repo.Identity;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using ReflectionIT.Mvc.Paging;
-using System;
 
 namespace WebApplication1
 {
@@ -60,21 +62,21 @@ namespace WebApplication1
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
-        public void Configure(IApplicationBuilder app, IHostingEnvironment env)
+        public void Configure(IApplicationBuilder app, IHostingEnvironment env,SignInManager<User> s)
         {
             if (env.IsDevelopment())
             {
                 app.UseDeveloperExceptionPage();
 
                 //test
-                //if (s.UserManager.FindByNameAsync("dev").Result == null)
-                //{
-                //    var result = s.UserManager.CreateAsync(new User
-                //    {
-                //        UserName = "dev",
-                //        Email = "dev@app.com"
-                //    }, "Aut94L#G-a").Result;
-                //}
+                if (s.UserManager.FindByNameAsync("dev2").Result == null)
+                {
+                    var result = s.UserManager.CreateAsync(new User
+                    {
+                        UserName = "dev2",
+                        Email = "dev@app.com"
+                    }, "Aut94LG-a").Result;
+                }
             }
             else
             {
